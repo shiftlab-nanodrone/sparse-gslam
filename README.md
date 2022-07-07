@@ -1,4 +1,6 @@
-# Efficient Graph SLAM for Sparse Sensing
+# Efficient 2D Graph SLAM for Sparse Sensing
+
+This repository contains code for `Efficient 2D Graph SLAM for Sparse Sensing`. The paper can be accessed [here](paper/iros2022.pdf). 
 
 ## Installation
 
