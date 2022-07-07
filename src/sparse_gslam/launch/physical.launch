@@ -1,0 +1,31 @@
+<launch>
+    <rosparam file="$(find sparse_gslam)/config/swarm.yaml" ns="swarm"></rosparam>
+    <node pkg="joy" type="joy_node" name="joy_node" output="screen">
+        <rosparam file="$(find sparse_gslam)/config/gamepad.yaml"></rosparam>
+    </node>
+    <node pkg="tf2_ros" type="static_transform_publisher" name="static_tf_pub2" args="0 0 0 0 0 0 map crazyflie2/odom" />
+    <node pkg="tf2_ros" type="static_transform_publisher" name="static_tf_pub3" args="0 0 0 0 0 0 map crazyflie3/odom" />
+    <node pkg="sparse_gslam" type="converter" name="converter" output="screen"></node>
+    <rosparam file="$(find sparse_gslam)/config/swarm.yaml" ns="swarm"></rosparam>
+        <node pkg="sparse_gslam" name="controller" type="controller.py" output="screen">
+    </node>
+
+    <node pkg="ls_extractor" type="ls_extractor_node" name="ls_extractor" output="screen">
+        <rosparam file="$(find sparse_gslam)/config/line_extractor.yaml"></rosparam>
+    </node>
+
+    <node pkg="sparse_gslam" type="multislam" name="multislam" output="screen">
+        <rosparam file="$(find sparse_gslam)/config/swarm.yaml"></rosparam>
+    </node>
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find sparse_gslam)/rviz_config/nokeep.rviz" />
+
+    <!-- <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+        <rosparam file="$(find sparse_gslam)/config/costmap_common.yaml" command="load" ns="global_costmap" />
+        <rosparam file="$(find sparse_gslam)/config/costmap_common.yaml" command="load" ns="local_costmap" />
+        <rosparam file="$(find sparse_gslam)/config/global_map.yaml" command="load" />
+        <rosparam file="$(find sparse_gslam)/config/local_map.yaml" command="load" />
+        <rosparam file="$(find sparse_gslam)/config/planner.yaml" command="load" />
+        <rosparam file="$(find sparse_gslam)/config/move_base.yaml" command="load" />
+        <remap from="cmd_vel" to="/crazyflie2/cmd_vel"/>
+    </node> -->
+</launch>

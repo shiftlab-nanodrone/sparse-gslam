@@ -1,0 +1,14 @@
+# the maximum distance allowed between any 2 points that constitude a line segment
+max_line_gap: 0.3
+# minimum allowed line length
+min_line_length: 0.75
+# split a segment when the distance from any point on this segment to this segment is greater than this value
+min_split_dist: 0.1
+# a point is considered a outlier if the distance between it and any of its two neighbors is greater than this value
+outlier_dist: 0.1
+# minimum allowed number of points for a line segment
+min_line_points: 10
+# unused config. please ignore
+rmse_thresh: 0.1
+# the distance threshold between 2 clusters. Setting a large value effectively disable clustering
+cluster_threshold: 100.0

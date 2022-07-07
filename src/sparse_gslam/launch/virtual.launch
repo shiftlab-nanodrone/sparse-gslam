@@ -1,0 +1,42 @@
+<launch>
+    <node pkg="sparse_gslam" type="multislam" name="multislam" output="screen"></node>
+    <rosparam file="$(find sparse_gslam)/config/swarm.yaml" ns="swarm"></rosparam>
+    <rosparam file="$(find sparse_gslam)/config/data_association.yaml" ns="data_association"></rosparam>
+    <node pkg="ls_extractor" type="ls_extractor_node" name="ls_extractor" output="screen">
+        <rosparam file="$(find sparse_gslam)/config/line_extractor.yaml"></rosparam>
+    </node>
+
+    <node pkg="tf2_ros" type="static_transform_publisher" name="static_tf_pub2" args="10 1.0 0 0 0 0 map crazyflie2/odom" />
+    <node pkg="tf2_ros" type="static_transform_publisher" name="static_tf_pub3" args="1 1 0 1.2 0 0 map crazyflie3/odom" />
+    <node pkg="map_server" type="map_server" name="virtual_map_server" output="screen" args="$(find sparse_gslam)/config/sim_map.yaml"></node>
+
+    <arg name="rviz" default="true"/>
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find sparse_gslam)/rviz_config/nokeep.rviz" if="$(arg rviz)" />
+
+    <node pkg="sparse_gslam" type="simulator" name="simulator2" output="screen">
+        <param name="drone_name" value="crazyflie2"></param>
+        <param name="use_cmd_vel" value="false"></param>
+    </node>
+    <!-- <node pkg="sparse_gslam" type="simulator" name="simulator3" output="screen">
+        <param name="drone_name" value="crazyflie3"></param>
+        <param name="use_cmd_vel" value="false"></param>
+    </node> -->
+
+    <!-- <node pkg="move_base" type="move_base" respawn="false" name="crazyflie2" output="screen">
+        <param name="global_costmap/robot_base_frame" value="crazyflie2/base_link"/>
+        <param name="local_costmap/robot_base_frame" value="crazyflie2/base_link"/>
+        <rosparam file="$(find sparse_gslam)/config/costmap.yaml" command="load" />
+        <rosparam file="$(find sparse_gslam)/config/ob_src_crazyflie2.yaml" command="load" ns="local_costmap" />
+        <rosparam file="$(find sparse_gslam)/config/move_base.yaml" command="load" />
+        <remap from="cmd_vel" to="/crazyflie2/cmd_vel"/>
+    </node> -->
+
+    <!-- <node pkg="move_base" type="move_base" respawn="false" name="crazyflie3" output="screen">
+        <param name="global_costmap/robot_base_frame" value="crazyflie3/base_link"/>
+        <param name="local_costmap/robot_base_frame" value="crazyflie3/base_link"/>
+        <rosparam file="$(find sparse_gslam)/config/costmap.yaml" command="load" />
+        <rosparam file="$(find sparse_gslam)/config/ob_src_crazyflie3.yaml" command="load" ns="local_costmap" />
+        <rosparam file="$(find sparse_gslam)/config/move_base.yaml" command="load" />
+        <remap from="cmd_vel" to="/crazyflie3/cmd_vel"/>
+    </node> -->
+</launch>

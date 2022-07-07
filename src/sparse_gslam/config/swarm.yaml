@@ -1,0 +1,5 @@
+address: radio://0/80/2M/E7E7E7E703
+teleop: true
+hover_before_start: false
+gamepad: true
+height: 0.5

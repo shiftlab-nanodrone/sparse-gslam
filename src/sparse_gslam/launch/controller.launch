@@ -1,0 +1,11 @@
+<launch>
+    <node pkg="sparse_gslam" name="controller" type="controller.py" output="screen">
+        <rosparam file="$(find sparse_gslam)/config/swarm.yaml"></rosparam>
+    </node>
+    <node pkg="joy" type="joy_node" name="joy_node" output="screen">
+        <rosparam file="$(find sparse_gslam)/config/gamepad.yaml"></rosparam>
+    </node>
+    <!-- <include file="$(find sparse_gslam)/launch/common.launch">
+        <param name="rviz" value="$(arg rviz)"/>
+    </include> -->
+</launch>

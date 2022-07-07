@@ -1,0 +1,19 @@
+<launch>
+    <arg name="dataset" default="intel-lab"/>
+    <arg name="postfix" default=""/>
+    <arg name="realtime" default="false"/>
+    <arg name="rate" default="100000"/>
+    <node pkg="tf2_ros" type="static_transform_publisher" name="static_tf_pub2" args="0 0 0 0 0 0 1 map odom" />
+    <!-- <node type="rviz" name="rviz0" pkg="rviz" args="-d $(find sparse_gslam)/rviz_config/odom.rviz" /> -->
+    <node type="rviz" name="rviz1" pkg="rviz" args="-d $(find sparse_gslam)/rviz_config/landmark.rviz" />
+    <node type="rviz" name="rviz2" pkg="rviz" args="-d $(find sparse_gslam)/rviz_config/pose_graph.rviz" />
+    
+    <node pkg="sparse_gslam" type="log_runner" name="log_runner" output="screen" >
+        <rosparam param="realtime" subst_value="true">$(arg realtime)</rosparam>
+        <rosparam param="rate" subst_value="true">$(arg rate)</rosparam>
+        <rosparam param="dataset_dir" subst_value="true">$(find sparse_gslam)/datasets/$(arg dataset)/</rosparam>
+        <rosparam param="dataset_name" subst_value="true">$(arg dataset)</rosparam>
+        <rosparam file="$(find sparse_gslam)/datasets/$(arg dataset)/slam$(arg postfix).yaml" ns="slam"></rosparam>
+        <rosparam file="$(find sparse_gslam)/datasets/$(arg dataset)/line_extractor.yaml" ns="line_extractor"></rosparam>
+    </node>
+</launch>

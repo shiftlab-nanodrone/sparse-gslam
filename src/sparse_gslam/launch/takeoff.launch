@@ -1,0 +1,8 @@
+<launch>
+    <node pkg="sparse_gslam" name="takeoff1" type="takeoff.py" output="screen" ns="crazyflie1">
+    </node>
+    <node pkg="sparse_gslam" name="takeoff2" type="takeoff.py" output="screen" ns="crazyflie2">
+    </node>
+    <node pkg="sparse_gslam" name="takeoff3" type="takeoff.py" output="screen" ns="crazyflie3">
+    </node>
+</launch>

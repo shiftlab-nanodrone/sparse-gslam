@@ -1,0 +1,10 @@
+<launch>
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find ls_extractor)/config/example.rviz" />
+    <node pkg="ls_extractor" type="laser_node" name="laser_node" output="screen">
+        <rosparam file="$(find ls_extractor)/config/example.yaml"/>
+        <rosparam param="frame_id">baselink</rosparam>
+        <!-- change these remaps if needed -->
+        <remap from="scan" to="/full_scan"/>
+        <remap from="segment_markers" to="/ls/segment_markers"/>
+    </node> 
+</launch>

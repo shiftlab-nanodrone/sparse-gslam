@@ -1,0 +1,45 @@
+address: radio://0/80/2M/E7E7E7E702
+std_x: 0.2
+std_y: 1.0
+std_w: 2.0
+std_r: 0.15
+std_rpcm: 0.0001
+
+angle_min: -1.5707963267948966
+angle_max: 1.5533430342749532
+range_min: 0.0
+range_max: 5.0
+scan_size: 10
+multicloud_size: 160
+
+landmark_max_gap: 0.5
+landmark_max_dist: 10.0
+landmark_assoc_thresh: 0.5
+
+# settings for the scan to map matcher
+last_traj_length: 5.0
+loop_closure_min_score: 0.65
+angular_search_window: 1.5 # radians
+linear_search_window: 5.0 # meters
+branch_and_bound_depth: 5
+
+# settings for the occupancy grid
+hit_probability: 0.7
+miss_probability: 0.4
+
+# settings for the submap builder
+max_match_distance: 10.0 # meters
+submap_resolution: 0.1 # meters
+submap_trajectory_length: 6.0 # meters
+submap_overlap_poses: 0 # number of poses
+last_submap_not_match: 3
+loop_closing_threads: 8
+
+dcs_phi: 10.0
+
+match_interval: 25
+data_provider: carmen
+
+# visualization settings
+visualize_rate: 3
+map_resolution: 0.1

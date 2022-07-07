@@ -1,0 +1,7 @@
+max_line_gap: 0.25
+min_line_length: 0.75
+min_split_dist: 0.1
+outlier_dist: 0.1
+min_line_points: 10
+rmse_thresh: 0.1
+cluster_threshold: 100.0
