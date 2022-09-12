@@ -55,9 +55,9 @@ SubmapLoopCloser::SubmapLoopCloser(Drone& drone, const XmlRpc::XmlRpcValue& conf
     matcher_options.set_linear_search_window(config["linear_search_window"]);
     matcher_options.set_branch_and_bound_depth(config["branch_and_bound_depth"]);
     dcs_kernel.setDelta(config["dcs_phi"]);
-    #ifdef SHOW_MATCH
-    // plt::ion();
-    #endif
+#ifdef SHOW_MATCH
+    plt::ion();
+#endif
 }
 
 void SubmapLoopCloser::precompute() {
@@ -80,7 +80,7 @@ void SubmapLoopCloser::precompute() {
         lock.unlock();
 
         std::cout << "finishing a new submap with " << temp_range.points_.size() << std::endl;
-        submaps.emplace_back(0, submap_resolution);
+        submaps.emplace_back(submap_resolution);
         auto& submap = submaps.back();
         {
             range_data_inserter.Insert(temp_range, &submap.probability_grid);
@@ -95,12 +95,6 @@ void SubmapLoopCloser::precompute() {
         submap.fix_submap(&drone.lm_graph.poses[mid].pose, matcher_options, 0.5f);
         last_pose_idx = std::max(0, mid - submap_overlap_poses);
     }
-
-    // for (auto& sub : submaps) {
-    //     if (sub.matcher.is_initialized()) {
-    //         sub.publish_without_compute(ros::Time::now());
-    //     }
-    // }
 }
 
 struct MatchResult {

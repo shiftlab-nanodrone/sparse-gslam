@@ -3,8 +3,7 @@ Panels:
     Help Height: 85
     Name: Displays
     Property Tree Widget:
-      Expanded:
-        - /slam_map1
+      Expanded: ~
       Splitter Ratio: 0.5011494159698486
     Tree Height: 640
   - Class: rviz/Selection
@@ -129,7 +128,7 @@ Visualization Manager:
       Axes Radius: 0.009999999776482582
       Class: rviz/PoseArray
       Color: 255; 0; 255
-      Enabled: true
+      Enabled: false
       Head Length: 0.07000000029802322
       Head Radius: 0.029999999329447746
       Name: 2-Poses
@@ -139,7 +138,7 @@ Visualization Manager:
       Shape: Arrow (Flat)
       Topic: /pose_graph_poses
       Unreliable: false
-      Value: true
+      Value: false
     - Angle Tolerance: 0.10000000149011612
       Class: rviz/Odometry
       Covariance:
@@ -221,7 +220,10 @@ Visualization Manager:
       foreground color: 25; 255; 240
       left: 120
       max color: 255; 0; 0
+      max color change threthold: 0
       max value: 4.099999904632568
+      med color: 255; 0; 0
+      med color change threthold: 0
       min value: 3.5
       show caption: true
       size: 100
@@ -241,7 +243,10 @@ Visualization Manager:
       foreground color: 25; 255; 240
       left: 120
       max color: 255; 0; 0
+      max color change threthold: 0
       max value: 34
+      med color: 255; 0; 0
+      med color change threthold: 0
       min value: 60
       show caption: true
       size: 100
@@ -249,12 +254,13 @@ Visualization Manager:
       top: 150
     - Alpha: 1
       Class: rviz/Axes
-      Enabled: true
+      Enabled: false
       Length: 1
       Name: Axes
       Radius: 0.10000000149011612
       Reference Frame: <Fixed Frame>
-      Value: true
+      Show Trail: false
+      Value: false
     - Alpha: 0.699999988079071
       Class: rviz/Map
       Color Scheme: map
@@ -277,12 +283,12 @@ Visualization Manager:
       Class: rviz/Map
       Color Scheme: raw
       Draw Behind: false
-      Enabled: true
+      Enabled: false
       Name: slam_map
       Topic: /pose_map
       Unreliable: false
       Use Timestamp: false
-      Value: true
+      Value: false
     - Class: rviz/Marker
       Enabled: false
       Marker Topic: /landmarks
@@ -299,46 +305,6 @@ Visualization Manager:
         {}
       Queue Size: 100
       Value: false
-    - Alpha: 0.699999988079071
-      Class: rviz/Map
-      Color Scheme: map
-      Draw Behind: false
-      Enabled: false
-      Name: Map
-      Topic: /submap0
-      Unreliable: false
-      Use Timestamp: false
-      Value: false
-    - Alpha: 0.699999988079071
-      Class: rviz/Map
-      Color Scheme: map
-      Draw Behind: false
-      Enabled: false
-      Name: Map
-      Topic: /submap2
-      Unreliable: false
-      Use Timestamp: false
-      Value: false
-    - Alpha: 0.699999988079071
-      Class: rviz/Map
-      Color Scheme: map
-      Draw Behind: false
-      Enabled: false
-      Name: Map
-      Topic: /submap4
-      Unreliable: false
-      Use Timestamp: false
-      Value: false
-    - Alpha: 0.699999988079071
-      Class: rviz/Map
-      Color Scheme: map
-      Draw Behind: false
-      Enabled: false
-      Name: Map
-      Topic: /submap8
-      Unreliable: false
-      Use Timestamp: false
-      Value: false
     - Class: rviz/Marker
       Enabled: false
       Marker Topic: /match_submap
@@ -348,28 +314,38 @@ Visualization Manager:
       Queue Size: 100
       Value: false
     - Class: rviz/Marker
-      Enabled: true
+      Enabled: false
       Marker Topic: /false_candidates
       Name: Marker
       Namespaces:
         {}
       Queue Size: 100
-      Value: true
+      Value: false
     - Class: rviz/Marker
-      Enabled: true
+      Enabled: false
       Marker Topic: /loop_closures
       Name: Marker
       Namespaces:
-        closure: true
+        {}
       Queue Size: 100
-      Value: true
+      Value: false
     - Class: rviz/Marker
-      Enabled: true
+      Enabled: false
       Marker Topic: /false_loop_closures
       Name: Marker
       Namespaces:
         {}
       Queue Size: 100
+      Value: false
+    - Alpha: 0.699999988079071
+      Class: rviz/Map
+      Color Scheme: raw
+      Draw Behind: false
+      Enabled: true
+      Name: Submap
+      Topic: /submap2
+      Unreliable: false
+      Use Timestamp: false
       Value: true
   Enabled: true
   Global Options:
@@ -398,7 +374,7 @@ Visualization Manager:
   Value: true
   Views:
     Current:
-      Angle: 0.004999970085918903
+      Angle: -0.055000029504299164
       Class: rviz/TopDownOrtho
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
@@ -408,10 +384,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Scale: 24.051692962646484
+      Scale: 27.983936309814453
       Target Frame: <Fixed Frame>
-      X: 2.155261993408203
-      Y: -4.855660915374756
+      X: 1.776360273361206
+      Y: -12.162277221679688
     Saved: ~
 Window Geometry:
   Displays:

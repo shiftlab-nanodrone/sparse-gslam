@@ -3,8 +3,12 @@ project(sparse_gslam)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++14 -Wall -Wno-sign-compare -march=native)
+add_definitions(-DVISUALIZE_SUBMAP=1)
+
+# for debug:
 # add_compile_options(-g -ftime-report)
 # add_compile_options(-fsanitize=address)
+
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages

@@ -138,6 +138,7 @@ class RangeDataInserter {
 };
 
 constexpr bool fixed_map = false;
+#ifdef USE_CARTOGRAPHER_GRID
 inline void convert_prob_grid(
     const Drone &drone,
     mapping::ProbabilityGrid &grid,
@@ -153,6 +154,7 @@ inline void convert_prob_grid(
     else
         Submap::probability_grid_to_occupancy_grid(g2o::SE2(), grid, grid_msg, 5.0f);
 }
+#endif
 
 struct Visualizer::Impl {
     static cartographer::mapping::ValueConversionTables conversion_table;
@@ -178,6 +180,8 @@ struct Visualizer::Impl {
     visualization_msgs::Marker match_submap_marker;
     ros::Publisher match_submap_pub;
 
+    std::array<ros::Publisher, 8> submaps_pub;
+
     std::atomic<bool> status;
     std::thread vis_thread;
 
@@ -202,6 +206,10 @@ struct Visualizer::Impl {
                                               lm_poses_pub(nh.advertise<geometry_msgs::PoseArray>("landmark_poses", 1)),
                                               pg_poses_pub(nh.advertise<geometry_msgs::PoseArray>("pose_graph_poses", 1)),
                                               match_submap_pub(nh.advertise<visualization_msgs::Marker>("/match_submap", 1)) {
+        for (int i = 0; i < submaps_pub.size(); i++) {
+            submaps_pub[i] = nh.advertise<nav_msgs::OccupancyGrid>("submap" + std::to_string(i + 1), 1);
+        }
+
         landmark_marker.header.frame_id = edge_marker.header.frame_id =
             closure_marker.header.frame_id = false_closure_marker.header.frame_id =
                 false_candidate_marker.header.frame_id = match_submap_marker.header.frame_id =
@@ -313,7 +321,20 @@ struct Visualizer::Impl {
                 match_submap_marker.points.back().x = info.x;
                 match_submap_marker.points.back().y = info.y;
             }
-
+#if defined(VISUALIZE_SUBMAP) || defined(SHOW_MATCH)
+            int last_submaps_to_pub = std::min((int)submaps_pub.size(), (int)drone.loop_closer.submaps.size() - 1);
+            if (last_submaps_to_pub > 0 && drone.lm_graph.poses.size() > 2) {
+                int i = 0;
+                auto trans_pre = drone.pose_graph.poses[drone.loop_closer.last_opt_pose_index - 1].pose.estimate() *
+                    drone.lm_graph.poses[drone.loop_closer.last_opt_pose_index - 1].pose.estimate().inverse();
+                for (auto it = drone.loop_closer.submaps.end() - last_submaps_to_pub; it != drone.loop_closer.submaps.end(); it++, i++) {
+                    if (it->matcher.is_initialized()) {
+                        auto map_pose = it->pose->id() < drone.loop_closer.last_opt_pose_index ? static_cast<g2o::VertexSE2*>(drone.pose_graph.opt.vertex(it->pose->id()))->estimate() : trans_pre * it->pose->estimate();
+                        it->publish_without_compute(submaps_pub[i], map_pose);
+                    }
+                }
+            }
+#endif
             boost::shared_lock<boost::shared_mutex> pose_lock(drone.pose_graph.mu);
             visualize_closures(drone.pose_graph.closures, closure_marker);
             visualize_closures(drone.pose_graph.false_closures, false_closure_marker);
