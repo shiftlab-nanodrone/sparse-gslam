@@ -1,0 +1,70 @@
+# radio address of crazyflie. Ignored for log runner
+address: radio://0/80/2M/E7E7E7E702
+# the standard deviation of odometry measurements, in meters. They also serve as a tool to put more or less weight on pose-pose (odometry) constraints. Larger error means less weight.
+std_x: 0.2
+std_y: 1.0
+std_w: 1.0
+# the standard deviation of range measurements, in meters. They also serve as a tool to put more or less weight on pose-landmark constraints. Larger error means less weight.
+std_r: 0.1
+# ignored
+std_rpcm: 0.0001
+
+# Configuration of the sparse lidar. Meaning of these parameters can be found here: http://docs.ros.org/en/melodic/api/sensor_msgs/html/msg/LaserScan.html
+angle_min: -1.5707963267948966
+angle_max: 1.5707963267948966
+range_min: 0.0
+range_max: 7.0
+# number of range readings per scan
+scan_size: 4
+# see Fig 5 of the paper
+multicloud_size: 120
+
+# maximum gap between a extracted segment and landmark in meters. If the gap between the if greater than distance, they will not be associated even if they are colinear. Usually not a very important parameter. 
+landmark_max_gap: 2.0
+# disallowed pose landmark association if the robot has traveled this far after the landmark is created. This is to prevent reassociation of similar looking landmarks from far away. 
+landmark_max_dist: 10.0
+# This is ε in formula (5) in the paper. Usually the default 0.5 is good.
+landmark_assoc_thresh: 0.5
+
+# To perform scan to map matching, we first build a multiscan from past trajectory. This parameter defines the length of the trajectory. 
+# Longer trajectory = higher precision, lower recall, higher computation cost. 
+last_traj_length: 5.0
+# loop closure match threshold. Higher threshold = higher precision, lower recall, lower computation cost. 
+loop_closure_min_score: 0.7
+# Settings for the scan to map matcher. For more details, see the cartographer paper. 
+# Basic tuning guide: enlarge the search window and increase depth for higher recall, but it will lead to more computation. 
+# usually the default is good. 
+angular_search_window: 1.0 # radians
+linear_search_window: 5.0 # meters
+branch_and_bound_depth: 5
+
+# settings for the occupancy grid. Usually no need to change. Higher hit probability basically puts a higher weight for each scan hit in the occupancy grid
+hit_probability: 0.7
+miss_probability: 0.4
+
+# settings for the submap builder
+# Do not match the current multiscan against a submap if the distance from the current pose to the submap is greater than this value.
+# This is mainly a performance optimization. Reduce max match distance reduces the total matchable number of submaps in the pool.
+max_match_distance: 5.0 # meters
+# Cell size of the occupancy grid. This parameter trade off between fuzziness of submaps to allow more matching candidate and matching accuracy. Higher the resolution (smaller cell size), higher matching accuracy but less match recall and more computation. For sparse sensing, usually 0.1 is good.
+submap_resolution: 0.1 # meters
+# Each submap is built from scans accumulated for a certain length of trajectory. For example, 6.0 here means that each submap is built from the scans during the past 6 meters of robot trajectory. Larger trajectory length means more information will present in the submap, hence allowing more matches, but will lead to more computation. usually the default 6.0 is good. 
+submap_trajectory_length: 6.0 # meters
+submap_overlap_poses: 2 # number of poses
+# number of recently created submaps not to matched. Only tune this parameter when you see false matches between recently poses and recent submaps. This map happen when you have a lot of featureless hallways, which may lead to false matches between recent pose and submaps. 
+last_submap_not_match: 3
+# number of threads to use to compute loop closures. 
+loop_closing_threads: 8
+
+# phi for DCS. For more details, see the DCS paper. 
+dcs_phi: 1.0
+
+# The interval of compute loop closures computation. 10 means we compute loop closure once every 10 scans/data frames
+match_interval: 10
+# the name of the data provider in data_provider.cpp
+data_provider: oregon
+
+# visualization settings
+visualize_rate: 2 # in Hz
+# resolution of the global map. Lower resolution will lead to faster visualizations. 
+map_resolution: 0.1
